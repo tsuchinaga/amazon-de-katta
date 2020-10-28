@@ -16,10 +16,10 @@ function main() {
                 if (line.match(/id="itemDetails"/)) started = true // 商品詳細を見つけたらスタート
 
                 if (started) {
-                    url = getURL(line)
-                    title = getTitle(line)
-                    img = getIMG(line)
-                    price = getPrice(line)
+                    if (url === "") url = getURL(line)
+                    if (title === "") title = getTitle(line)
+                    if (img === "") img = getIMG(line)
+                    if (price === 0.0) price = getPrice(line)
                 }
             }
 
