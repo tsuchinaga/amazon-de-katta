@@ -9,7 +9,7 @@ function main() {
             let title = ""
             let url = ""
             let img = ""
-            let price = 0
+            let price = "0"
             let started = false
             for (let line of message.getBody().split("\n")) {
                 if (started && line.match(/<\/table>/)) break // 始まっていてかつテーブルタグが閉じられたら終了
@@ -19,14 +19,14 @@ function main() {
                     if (url === "") url = getURL(line)
                     if (title === "") title = getTitle(line)
                     if (img === "") img = getIMG(line)
-                    if (price === 0.0) price = getPrice(line)
+                    if (price === "0") price = getPrice(line)
                 }
             }
 
             if (url !== "" && title !== "") {
                 embeds.push({
                     "title": title,
-                    "description": "￥ " + price.toString(),
+                    "description": "￥ " + price,
                     "url": url,
                     "image": {"url": img}
                 })
@@ -71,10 +71,10 @@ function getIMG(line: string): string {
     return imgPaths.join("/") + ".jpg"
 }
 
-function getPrice(line: string): number {
-    let match = line.match(/<strong>￥ (\d+)<\/strong>/)
-    if (match === null || match.length <= 1) return 0
-    return parseInt(match[1])
+function getPrice(line: string): string {
+    let match = line.match(/<strong>￥ (\d{1,3}(,\d{3})*)<\/strong>/)
+    if (match === null || match.length <= 1) return "0"
+    return match[1]
 }
 
 function post(embeds: object) {
